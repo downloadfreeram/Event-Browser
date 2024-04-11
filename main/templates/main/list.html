@@ -7,9 +7,13 @@
             <ul>
                 {% for item in ls.item_set.all %}
                     {% if item.complete == False %}
-                        <li><input type="checkbox" value="clicked" name="c{{item.id}}" checked>{{item.text}} </li>
+                        <li>
+                            <input type="checkbox" value="clicked" name="c{{item.id}}" checked>{{item.text}} 
+                        </li>
                     {% else %}
-                        <li><input type="checkbox" value="clicked" name="c{{item.id}}"> {{item.text}} </li>
+                        <li>
+                            <input type="checkbox" value="clicked" name="c{{item.id}}"> {{item.text}} 
+                        </li>
                     {% endif %}
                 {% endfor %}
             </ul>
