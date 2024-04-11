@@ -1,8 +1,16 @@
 {% extends 'main/base.html' %}
 {% block title %}Event Organiser{% endblock %}
 {% block content %}
-<h1>Welcome {{ user.get_username }} </h1>
-<p> <a href="../signout">Sign out</a></p>
-<p>Create an event</p>
-<p>Browse events</p>
+    <h1>
+        Welcome {{ user.get_username }} 
+    </h1>
+    <p> 
+        <a href="../signout">Sign out</a>
+    </p>
+    <p>
+        <button><a href="../create/">Create an event</a></button>
+    </p>
+    <p>
+        Browse events
+    </p>
 {% endblock %}
