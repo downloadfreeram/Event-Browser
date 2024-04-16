@@ -15,10 +15,12 @@ def create(response):
         form = CreateNewEvent(response.POST or None)
         if form.is_valid():
             print("valid")
-            d = form.cleaned_data
-            t = CreateNewEvent(d)
+            d = form.cleaned_data["name"]
+            t = Events(name=d)
             t.save()
-            return HttpResponseRedirect("/site/")
+            response.user.event.add(t)
+
+            return HttpResponseRedirect("/eventslist/")
         else:
             form = CreateNewEvent()
             print("not valid")
@@ -28,3 +30,6 @@ def create(response):
 
 def signout(response):
     return render(response, "main/signout.html", {})
+
+def eventslist(response):
+    return render(response, "main/eventslist.html",{})

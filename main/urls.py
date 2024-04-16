@@ -6,4 +6,5 @@ urlpatterns = [
     path("site/",views.site,name="site"),
     path("create/",views.create,name="create"),
     path("signout/", views.signout, name="signout"),
+    path("eventslist/", views.eventslist, name="eventslist")
 ]
