@@ -2,4 +2,7 @@
 {% block title %}{{ item.name }}{% endblock %}
 {% block content %}
     <h1>{{ item.name }}</h1>
+    <p>{{ item.description }}</p>
+    <p>{{ item.date }}</p>
+    <p>Takes place in: {{ item.country }}, {{ item.city }} </p>
 {% endblock %}

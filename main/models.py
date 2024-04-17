@@ -26,4 +26,14 @@ class Events(models.Model):
 
     def __str__(self):
         return self.name
+
+# class EventParticipation(models.Models):
+#     class Options(models.TextChoices):
+#         will = "yes"
+#         willnot = "no"
+#     user = models.ForeignKey(Events.user, on_delete=models.CASCADE,related_name="eventParticipation",null=True)
+#     event = models.ForeignKey(Events.id)
+#     participation = models.CharField(max_length=3,choices=Options,default=Options.willnot)
+#     def __str__(self):
+#         return self.name
     

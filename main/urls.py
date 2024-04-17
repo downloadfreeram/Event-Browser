@@ -7,6 +7,7 @@ urlpatterns = [
     path("create/",views.create,name="create"),
     path("signout/", views.signout, name="signout"),
     path("eventslist/", views.eventslist, name="eventslist"),
+    path("info/", views.info, name="info"),
     path("<int:id>",views.index, name="index"),
     path("mylist/",views.mylist,name="mylist"),
     path("deleteEvent/<int:id>",views.deleteEvent,name="deleteevent"),

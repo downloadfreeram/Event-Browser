@@ -7,46 +7,72 @@ from .forms import CreateNewEvent
 def home(response):
     return render(response, "main/home.html",{})
 
+def info(response):
+    return render(response,"main/info.html",{})
+
 def site(response):
-    return render(response, "main/site.html", {})
+    if response.user.is_authenticated:
+        print("authenticated")
+        return render(response, "main/site.html", {})
+    else:
+        return HttpResponseRedirect("/info/")
 
 def create(response):
-    if response.method == "POST":
-        form = CreateNewEvent(response.POST or None)
-        if form.is_valid():
-            print("valid")
-            d = form.cleaned_data["name"]
-            t = Events(name=d)
-            t.save()
-            response.user.event.add(t)
+    if response.user.is_authenticated:
+        if response.method == "POST":
+            form = CreateNewEvent(response.POST or None)
+            if form.is_valid():
+                d = form.cleaned_data["name"]
+                des = form.cleaned_data["description"]
+                dat = form.cleaned_data["date"]
+                cou = form.cleaned_data["country"]
+                city = form.cleaned_data["city"]
+                t = Events(name=d,date=dat,description=des,country=cou,city=city)
+                t.save()
+                response.user.event.add(t)
 
-            return HttpResponseRedirect("/eventslist/")
+                return HttpResponseRedirect("/eventslist/")
+            else:
+                form = CreateNewEvent()
+                print("not valid")
         else:
             form = CreateNewEvent()
-            print("not valid")
+        return render(response, "main/create.html",{'form':form})
     else:
-        form = CreateNewEvent()
-    return render(response, "main/create.html",{'form':form})
+        return HttpResponseRedirect("/info/")
 
 def signout(response):
     return render(response, "main/signout.html", {})
 
 def eventslist(response):
-    items = Events.objects.all()
-    context = {
-        'items':items,
-    }
-    return render(response, "main/eventslist.html",context)
+    if response.user.is_authenticated:
+        items = Events.objects.all()
+        context = {
+            'items':items,
+        }
+        return render(response, "main/eventslist.html",context)
+    else:
+        return HttpResponseRedirect("/info/")
 
 def index(response,id):
-    item = Events.objects.get(id=id)
-    return render(response,'main/index.html',{'item':item})
+    if response.user.is_authenticated:
+        item = Events.objects.get(id=id)
+        return render(response,'main/index.html',{'item':item})
+    else:
+        return HttpResponseRedirect("/info/")
 
 def mylist(request):
-    username = request.user.username
-    items = Events.objects.filter(user__username = username)
-    return render(request,'main/mylist.html',{'items':items})
+    if request.user.is_authenticated:
+        username = request.user.username
+        items = Events.objects.filter(user__username = username)
+        return render(request,'main/mylist.html',{'items':items})
+    else:
+        return HttpResponseRedirect("/info/")
 
 def deleteEvent(request,id):
-    Events.objects.get(id=id).delete()
-    return HttpResponseRedirect("/mylist/")
+    if request.user.is_authenticated:
+        Events.objects.get(id=id).delete()
+        return HttpResponseRedirect("/mylist/")
+    else:
+        return HttpResponseRedirect("/info/")
+
