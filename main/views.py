@@ -32,4 +32,12 @@ def signout(response):
     return render(response, "main/signout.html", {})
 
 def eventslist(response):
-    return render(response, "main/eventslist.html",{})
+    items = Events.objects.all()
+    context = {
+        'items':items,
+    }
+    return render(response, "main/eventslist.html",context)
+
+def index(response,id):
+    item = Events.objects.get(id=id)
+    return render(response,'main/index.html',{'item':item})

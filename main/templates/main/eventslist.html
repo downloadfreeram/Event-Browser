@@ -1,5 +1,12 @@
 {% extends 'main/base.html' %}
 {% block title %}List of Events {% endblock %}
 {% block content %}
-<h1>List</h1>
+    <h1>List of the events</h1>
+    {% if items %}
+        {% for i in items %}
+            <p>{{ i.id }}<a href="/{{ i.id }}">{{ i.name }}</a> Created by {{ i.user }}</p>
+        {% endfor %}
+    {% else %}
+        <p>Curently no events</p>
+    {% endif %}
 {% endblock %}
