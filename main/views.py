@@ -41,3 +41,10 @@ def eventslist(response):
 def index(response,id):
     item = Events.objects.get(id=id)
     return render(response,'main/index.html',{'item':item})
+
+def mylist(response):
+    items = Events.objects.all()
+    context = {
+        'items':items,
+    }
+    return render(response,'main/mylist.html',context)
