@@ -9,4 +9,5 @@ urlpatterns = [
     path("eventslist/", views.eventslist, name="eventslist"),
     path("<int:id>",views.index, name="index"),
     path("mylist/",views.mylist,name="mylist"),
+    path("deleteEvent/<int:id>",views.deleteEvent,name="deleteevent"),
 ]

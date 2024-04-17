@@ -42,9 +42,11 @@ def index(response,id):
     item = Events.objects.get(id=id)
     return render(response,'main/index.html',{'item':item})
 
-def mylist(response):
-    items = Events.objects.all()
-    context = {
-        'items':items,
-    }
-    return render(response,'main/mylist.html',context)
+def mylist(request):
+    username = request.user.username
+    items = Events.objects.filter(user__username = username)
+    return render(request,'main/mylist.html',{'items':items})
+
+def deleteEvent(request,id):
+    Events.objects.get(id=id).delete()
+    return HttpResponseRedirect("/mylist/")
