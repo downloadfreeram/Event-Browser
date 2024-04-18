@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Events
+from .models import Events, EventParticipation
 from .forms import CreateNewEvent
 
 # Create your views here.
@@ -61,6 +61,12 @@ def index(response,id):
     if response.user.is_authenticated:
         #get an id of user's event to use it as a website
         item = Events.objects.get(id=id)
+        if response.method == "POST":
+            print("dziala")
+            usr = response.user.username
+            query = EventParticipation(user=usr,eventId=id,participation="yes")
+            query.save()
+            return HttpResponseRedirect("/site/")
         return render(response,'main/index.html',{'item':item})
     else:
         return HttpResponseRedirect("/info/")
@@ -82,3 +88,10 @@ def deleteEvent(request,id):
     else:
         return HttpResponseRedirect("/info/")
 
+def participate(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            print("dziala")
+            return render(request,'main/site.html',{})
+    else:
+        return HttpResponseRedirect("/info/")

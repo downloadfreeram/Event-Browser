@@ -11,4 +11,5 @@ urlpatterns = [
     path("<int:id>",views.index, name="index"),
     path("mylist/",views.mylist,name="mylist"),
     path("deleteEvent/<int:id>",views.deleteEvent,name="deleteevent"),
+    path("participate/<int:id>",views.participate, name="participate"),
 ]

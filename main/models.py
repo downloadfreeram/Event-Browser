@@ -12,7 +12,7 @@ class Events(models.Model):
         null=True)
     name = models.CharField(
         max_length=200
-        )
+        ) 
     date = models.DateField(
         default = timezone.now
         )

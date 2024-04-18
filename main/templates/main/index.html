@@ -5,5 +5,5 @@
     <p>{{ item.description }}</p>
     <p>{{ item.date }}</p>
     <p>Takes place in: {{ item.country }}, {{ item.city }} </p>
-    Interested? Take part to stay up to date 
+    Interested? Take part to stay up to date. In order to do it press <form method="post" action="">{% csrf_token %}<button name="participate" type="submit">here</button></form>
 {% endblock %}
