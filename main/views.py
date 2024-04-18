@@ -61,12 +61,15 @@ def index(response,id):
     if response.user.is_authenticated:
         #get an id of user's event to use it as a website
         item = Events.objects.get(id=id)
+        #after pressing the "participate" submit button add a new entry to the EventParticipation database about user's action
         if response.method == "POST":
-            print("dziala")
+            print("post succesfully done")
             usr = response.user.username
             query = EventParticipation(user=usr,eventId=id,participation="yes")
             query.save()
             return HttpResponseRedirect("/site/")
+        else:
+            print("post failed")
         return render(response,'main/index.html',{'item':item})
     else:
         return HttpResponseRedirect("/info/")
