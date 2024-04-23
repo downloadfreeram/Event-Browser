@@ -14,7 +14,6 @@ def info(response):
 
 def site(response):
     if response.user.is_authenticated:
-        print("authenticated")
         return render(response, "main/site.html", {})
     else:
         return HttpResponseRedirect("/info/")
@@ -65,8 +64,8 @@ def index(response,id):
         item = Events.objects.get(id=id)
         #after pressing the "participate" submit button add a new entry to the EventParticipation database about user's action
         if response.method == "POST":
-            print("post succesfully done")
             usr = response.user.username
+            #using Q objects for queries, check if the user is curently participating in the event, if yes then show the alert message
             if(EventParticipation.objects.filter(Q(user = usr)&Q(eventId = id))):
                 messages.add_message(response, messages.INFO,"You are currently participating in the event")
             else:
@@ -74,7 +73,7 @@ def index(response,id):
                 query.save()
                 return HttpResponseRedirect("/site/")
         else:
-            print("post failed")
+            print("POST failed")
         return render(response,'main/index.html',{'item':item})
     else:
         return HttpResponseRedirect("/info/")
@@ -85,7 +84,6 @@ def mylist(request):
         username = request.user.username
         items = Events.objects.filter(user__username = username)
         events_items = EventParticipation.objects.filter(user = username)
-        print(events_items)
         return render(request,'main/mylist.html',{'items':items,'events_items':events_items})
     else:
         return HttpResponseRedirect("/info/")
@@ -101,7 +99,6 @@ def deleteEvent(request,id):
 def participate(request):
     if request.user.is_authenticated:
         if request.method == "POST":
-            print("dziala")
             return render(request,'main/site.html',{})
     else:
         return HttpResponseRedirect("/info/")
