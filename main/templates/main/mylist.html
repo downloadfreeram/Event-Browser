@@ -9,4 +9,12 @@
     {% else %}
         <p>Curently no created events</p>
     {% endif %}
+    <h1>List of events that i'm interested </h1>
+    {% if events_items %}
+        {% for j in events_items %}
+            <p>{{ j.participation }}</p>
+        {% endfor %}
+    {% else %}
+        <p>Curently not interested in any event</p>
+    {% endif %}
 {% endblock %}

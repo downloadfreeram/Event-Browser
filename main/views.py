@@ -79,7 +79,9 @@ def mylist(request):
         #request user's name and then create a query in the Events db
         username = request.user.username
         items = Events.objects.filter(user__username = username)
-        return render(request,'main/mylist.html',{'items':items})
+        events_items = EventParticipation.objects.filter(user = username)
+        print(events_items)
+        return render(request,'main/mylist.html',{'items':items,'events_items':events_items})
     else:
         return HttpResponseRedirect("/info/")
 
