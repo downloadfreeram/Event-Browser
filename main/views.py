@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Events, EventParticipation
 from .forms import CreateNewEvent
+from django.db.models import Q
+from django.contrib import messages
 
 # Create your views here.
 def home(response):
@@ -65,9 +67,12 @@ def index(response,id):
         if response.method == "POST":
             print("post succesfully done")
             usr = response.user.username
-            query = EventParticipation(user=usr,eventId=id,participation="yes")
-            query.save()
-            return HttpResponseRedirect("/site/")
+            if(EventParticipation.objects.filter(Q(user = usr)&Q(eventId = id))):
+                messages.add_message(response, messages.INFO,"You are currently participating in the event")
+            else:
+                query = EventParticipation(user=usr,eventId=id,participation="yes")
+                query.save()
+                return HttpResponseRedirect("/site/")
         else:
             print("post failed")
         return render(response,'main/index.html',{'item':item})
