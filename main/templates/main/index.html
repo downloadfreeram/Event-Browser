@@ -2,8 +2,10 @@
 {% block title %}{{ item.name }}{% endblock %}
 {% block content %}
     <h1>{{ item.name }}</h1>
-    <p>{{ item.description }}</p>
+    <p>{{ item.description|safe }}</p>
     <p>{{ item.date }}</p>
     <p>Takes place in: {{ item.country }}, {{ item.city }} </p>
-    Interested? Take part to stay up to date. In order to do it press <form method="post" action="">{% csrf_token %}<button name="participate" type="submit">here</button></form>
+    {% if events_items.user != user.get_username %}
+        Interested? Take part to stay up to date. In order to do it press <form method="post" action="">{% csrf_token %}<button name="participate" type="submit">here</button></form>
+    {% endif %}
 {% endblock %}

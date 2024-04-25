@@ -61,7 +61,7 @@ def eventslist(response):
 def index(response,id):
     if response.user.is_authenticated:
         #get an id of user's event to use it as a website
-        item = Events.objects.get(id=id)
+        item = Events.objects.get(id=id) 
         #after pressing the "participate" submit button add a new entry to the EventParticipation database about user's action
         if response.method == "POST":
             usr = response.user.username
@@ -74,6 +74,7 @@ def index(response,id):
                 return HttpResponseRedirect("/site/")
         else:
             print("POST failed")
+        
         return render(response,'main/index.html',{'item':item})
     else:
         return HttpResponseRedirect("/info/")
@@ -90,8 +91,11 @@ def mylist(request):
 
 def deleteEvent(request,id):
     if request.user.is_authenticated:
+        username = request.user.username
         #delete user's event with query to delete by specific event id
         Events.objects.get(id=id).delete()
+        #also delete all instances of events
+        EventParticipation.objects.filter(Q(eventId=id)).delete()
         return HttpResponseRedirect("/mylist/")
     else:
         return HttpResponseRedirect("/info/")
