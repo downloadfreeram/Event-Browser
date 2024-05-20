@@ -1,20 +1,27 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Events, EventParticipation
-from .forms import CreateNewEvent
+from .models import Events, EventParticipation, EventComments
+from .forms import CreateNewEvent, CreateEventComments
 from django.db.models import Q
 from django.contrib import messages
 
 # Create your views here.
 def home(response):
-    return render(response, "main/home.html",{})
+    return render(
+        response,
+        "main/home.html",
+        {})
 
 def info(response):
-    return render(response,"main/info.html",{})
+    return render(response,
+                  "main/info.html",
+                  {})
 
 def site(response):
     if response.user.is_authenticated:
-        return render(response, "main/site.html", {})
+        return render(response,
+                      "main/site.html",
+                      {})
     else:
         return HttpResponseRedirect("/info/")
 
@@ -30,7 +37,11 @@ def create(response):
                 dat = form.cleaned_data["date"]
                 cou = form.cleaned_data["country"]
                 city = form.cleaned_data["city"]
-                t = Events(name=d,date=dat,description=des,country=cou,city=city)
+                t = Events(name=d,
+                           date=dat,
+                           description=des
+                           ,country=cou,
+                           city=city)
                 t.save()
                 response.user.event.add(t)
 
@@ -40,7 +51,9 @@ def create(response):
                 print("not valid")
         else:
             form = CreateNewEvent()
-        return render(response, "main/create.html",{'form':form})
+        return render(response,
+                      "main/create.html",
+                      {'form':form})
     else:
         return HttpResponseRedirect("/info/")
 
@@ -54,7 +67,10 @@ def eventslist(response):
         context = {
             'items':items,
         }
-        return render(response, "main/eventslist.html",context)
+        return render(
+            response,
+            "main/eventslist.html",
+            context)
     else:
         return HttpResponseRedirect("/info/")
 
@@ -62,20 +78,42 @@ def index(response,id):
     if response.user.is_authenticated:
         #get an id of user's event to use it as a website
         item = Events.objects.get(id=id) 
+        comments = EventComments.objects.get(id=id)
+        usr = response.user.username
         #after pressing the "participate" submit button add a new entry to the EventParticipation database about user's action
-        if response.method == "POST":
-            usr = response.user.username
+        if 'participate' in response.POST:
             #using Q objects for queries, check if the user is curently participating in the event, if yes then show the alert message
             if(EventParticipation.objects.filter(Q(user = usr)&Q(eventId = id))):
-                messages.add_message(response, messages.INFO,"You are currently participating in the event")
+                messages.add_message(
+                    response, 
+                    messages.INFO,
+                    "You are currently participating in the event")
             else:
-                query = EventParticipation(user=usr,eventId=id,participation="yes")
+                query = EventParticipation(user=usr,
+                                           eventId=id,
+                                           participation="yes")
                 query.save()
                 return HttpResponseRedirect("/site/")
+        elif 'addComment' in response.POST:
+            form = CreateEventComments(response.POST or None)
+            if form.is_valid(): 
+                query = EventComments(user=usr, 
+                                      eventId=id,
+                                      text=form.cleaned_data["text"])
+                query.save()
+                response.user.event.add(query)
+                
+                return HttpResponseRedirect("/site/")
+            else:
+                query = EventComments()
+                print("not valid")
         else:
             print("POST failed")
         
-        return render(response,'main/index.html',{'item':item})
+        return render(response,
+                      'main/index.html',
+                      {'item':item,
+                       'comments':comments})
     else:
         return HttpResponseRedirect("/info/")
 
@@ -85,7 +123,10 @@ def mylist(request):
         username = request.user.username
         items = Events.objects.filter(user__username = username)
         events_items = EventParticipation.objects.filter(user = username)
-        return render(request,'main/mylist.html',{'items':items,'events_items':events_items})
+        return render(request,
+                      'main/mylist.html',
+                      {'items':items,
+                       'events_items':events_items})
     else:
         return HttpResponseRedirect("/info/")
 

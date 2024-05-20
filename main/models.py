@@ -30,8 +30,24 @@ class Events(models.Model):
 
 #additional database for users participation in an event
 class EventParticipation(models.Model):
-    user = models.CharField(max_length=100)
+    user = models.CharField(
+        max_length=100
+        )
     eventId = models.IntegerField()
-    participation = models.CharField(max_length=15)
+    participation = models.CharField(
+        max_length=15
+        )
+    def __str__(self):
+        return self.user
+
+#additional database for comments in each event
+class EventComments(models.Model):
+    user = models.CharField(
+        max_length=100
+        )
+    eventId = models.IntegerField()
+    text = models.CharField(
+        max_length=1000
+        )
     def __str__(self):
         return self.user

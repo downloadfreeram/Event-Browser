@@ -8,4 +8,25 @@
     {% if events_items.user != user.get_username %}
         Interested? Take part to stay up to date. In order to do it press <form method="post" action="">{% csrf_token %}<button name="participate" type="submit">here</button></form>
     {% endif %}
+    <div class="commentSection">
+        <h1>Komentarze</h1>
+        <form method="post" action="">
+            {% csrf_token %}
+            <textarea></textarea>
+            <button name="addComment" type="submit">Add</button>
+        </form>
+        <div class="comment">
+            {% if comments %}
+                {% for i in comments%}
+                    <div class="commentBlock">
+                        {{ comments.user }}
+                        <hr>
+                        {{ comments.text }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Currently no comments</p>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
