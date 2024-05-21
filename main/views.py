@@ -80,31 +80,34 @@ def index(response,id):
         item = Events.objects.get(id=id) 
         comments = EventComments.objects.filter(eventId=id)
         usr = response.user.username
-        #after pressing the "participate" submit button add a new entry to the EventParticipation database about user's action
-        if 'participate' in response.POST:
-            #using Q objects for queries, check if the user is curently participating in the event, if yes then show the alert message
-            if(EventParticipation.objects.filter(Q(user = usr)&Q(eventId = id))):
-                messages.add_message(
-                    response, 
-                    messages.INFO,
-                    "You are currently participating in the event")
-            else:
-                query = EventParticipation(user=usr,
-                                           eventId=id,
-                                           participation="yes")
-                query.save()
-                return HttpResponseRedirect("/site/")
-        elif 'addComment' in response.POST:
-            form = CreateEventComments(response.POST or None)
-            if form.is_valid(): 
-                query = EventComments(user=usr, 
-                                      eventId=id,
-                                      text=form.cleaned_data["text"])
-                query.save()
-                return HttpResponseRedirect("/site/")
-            else:
-                query = EventComments()
-                print("not valid")
+        #check which POST has been clicked 
+        if response.method == "POST":
+            if 'participate' in response.POST:
+                #using Q objects for queries, check if the user is curently participating in the event, if yes then show the alert message
+                if(EventParticipation.objects.filter(Q(user = usr)&Q(eventId = id))):
+                    messages.add_message(
+                        response, 
+                        messages.INFO,
+                        "You are currently participating in the event")
+                else:
+                    query = EventParticipation(user=usr,
+                                               eventId=id,
+                                               participation="yes")
+                    query.save()
+                    return HttpResponseRedirect("/site/")
+            #if the comment was added add a new entry into the EventComment database
+            elif 'addComment' in response.POST:
+                form = CreateEventComments(response.POST or None)
+                if form.is_valid(): 
+                    query = EventComments(user=usr, 
+                                          eventId=id,
+                                          text=form.cleaned_data["text"])
+                    query.save()
+                    return HttpResponseRedirect("/site/")
+            #if any of the post does not give any response print an error message 
+                else:
+                    query = EventComments()
+                    print("not valid")
         else:
             print("POST failed")
         context = {
