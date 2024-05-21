@@ -78,7 +78,7 @@ def index(response,id):
     if response.user.is_authenticated:
         #get an id of user's event to use it as a website
         item = Events.objects.get(id=id) 
-        comments = EventComments.objects.get(id=id)
+        comments = EventComments.objects.filter(eventId=id)
         usr = response.user.username
         #after pressing the "participate" submit button add a new entry to the EventParticipation database about user's action
         if 'participate' in response.POST:
@@ -101,19 +101,17 @@ def index(response,id):
                                       eventId=id,
                                       text=form.cleaned_data["text"])
                 query.save()
-                response.user.event.add(query)
-                
                 return HttpResponseRedirect("/site/")
             else:
                 query = EventComments()
                 print("not valid")
         else:
             print("POST failed")
-        
-        return render(response,
-                      'main/index.html',
-                      {'item':item,
-                       'comments':comments})
+        context = {
+            'item':item,
+            'comments':comments,
+        }
+        return render(response,'main/index.html',context)
     else:
         return HttpResponseRedirect("/info/")
 
