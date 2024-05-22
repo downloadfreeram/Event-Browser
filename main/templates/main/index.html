@@ -15,17 +15,17 @@
             <textarea></textarea>
             <button name="addComment" type="submit">Add</button>
         </form>
-        <div class="comment">
+        <div class="commentSection">
             {% if comments %}
-                {% for i in comments%}
+                {% for i in comments %}
                     <div class="commentBlock">
-                        {{ comments.user }}
+                        {{ i.user }}
                         <hr>
-                        {{ comments.text }}
+                        {{ i.text }}
                     </div>
                 {% endfor %}
             {% else %}
-                <p>Currently no comments</p>
+                <p>Curently no comments</p>
             {% endif %}
         </div>
     </div>
