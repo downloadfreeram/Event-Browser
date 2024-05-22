@@ -2,6 +2,9 @@
 {% block title %}List of Events {% endblock %}
 {% block content %}
     <h1>List of the events</h1>
+    <form method="GET" action="/eventslist/"> {% csrf_token %}
+        <input type="search" name="searchBar" placeholder="Search an event"> <button name="searchBtn" type="submit">Search</button> 
+    </form>
     {% if items %}
         {% for i in items %}
             <p><a href="/{{ i.id }}">{{ i.name }}</a> Created by {{ i.user }}</p>

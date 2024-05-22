@@ -64,6 +64,10 @@ def eventslist(response):
     if response.user.is_authenticated:
         #get all of the event data to render it on the webpage
         items = Events.objects.all()
+        #filter by name in search bar
+        search = response.GET.get('searchBar')
+        if search != '' and search is not None:
+            items = items.filter(name__icontains = search)
         context = {
             'items':items,
         }
