@@ -1,19 +1,24 @@
 {% extends 'main/base.html' %}
 {% block title %}{{ item.name }}{% endblock %}
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
     <h1>{{ item.name }}</h1>
     <p>{{ item.description|safe }}</p>
     <p>{{ item.date }}</p>
     <p>Takes place in: {{ item.country }}, {{ item.city }} </p>
     {% if events_items.user != user.get_username %}
-        Interested? Take part to stay up to date. In order to do it press <form method="post" action="">{% csrf_token %}<button name="participate" type="submit">here</button></form>
+        Interested? Take part to stay up to date. In order to do it press <form method="post" action="" name="participate">{% csrf_token %}<button name="btnParticipate" type="submit">here</button></form>
     {% endif %}
     <div class="commentSection">
         <h1>Komentarze</h1>
-        <form method="post" action="">
+        <form method="post" action="" name="addComment">
             {% csrf_token %}
-            <textarea></textarea>
-            <button name="addComment" type="submit">Add</button>
+            <textarea name="text"></textarea>
+            <button name="btnComment" type="submit">Add</button>
         </form>
         <div class="commentSection">
             {% if comments %}
