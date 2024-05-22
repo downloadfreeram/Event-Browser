@@ -31,6 +31,10 @@ class EventParticipation(models.Model):
         max_length=100
         )
     eventId = models.IntegerField()
+    name = models.CharField(
+        max_length=200
+    )
+    date = models.DateField()
     participation = models.CharField(
         max_length=15
         )

@@ -4,6 +4,8 @@ from .models import Events, EventParticipation, EventComments
 from .forms import CreateNewEvent, CreateEventComments
 from django.db.models import Q
 from django.contrib import messages
+from django.conf import settings
+from django.core.mail import send_mail
 
 # Create your views here.
 def home(response):
@@ -84,7 +86,7 @@ def index(response,id):
         item = Events.objects.get(id=id) 
         usr = response.user.username
         comments = EventComments.objects.filter(eventId = id)
-        #check which POST has been clicked 
+        #check which POST has been clicked
         if response.method == "POST" and "btnParticipate" in response.POST:
             #using Q objects for queries, check if the user is curently participating in the event, if yes then show the alert message
             if(EventParticipation.objects.filter(Q(user = usr)&Q(eventId = id))):
@@ -95,6 +97,8 @@ def index(response,id):
             else:
                 query = EventParticipation(user=usr,
                                             eventId=id,
+                                            name=item.name,
+                                            date=item.date,
                                             participation="yes")
                 query.save()
                 return HttpResponseRedirect("/site/")
@@ -133,6 +137,7 @@ def deleteEvent(request,id):
         Events.objects.get(id=id).delete()
         #also delete all instances of events
         EventParticipation.objects.filter(Q(eventId=id)).delete()
+        EventComments.objects.filter(Q(eventId=id)).delete()
         return HttpResponseRedirect("/mylist/")
     else:
         return HttpResponseRedirect("/info/")

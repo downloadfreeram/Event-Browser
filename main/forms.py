@@ -16,7 +16,7 @@ class CreateNewEvent(forms.ModelForm):
 class ParticipateAnEvent(forms.ModelForm):
     class Meta:
         model = EventParticipation
-        fields = ["user","eventId","participation"]
+        fields = ["user","eventId","name","date","participation"]
 
 class CreateEventComments(forms.ModelForm):
     class Meta:

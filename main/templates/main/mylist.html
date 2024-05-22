@@ -12,7 +12,7 @@
     <h1>List of events that i'm interested </h1>
     {% if events_items %}
         {% for j in events_items %}
-            <p>{{ j.eventId }}</p>
+            <p>{{ j.name }} {{ j.date }}</p>
         {% endfor %}
     {% else %}
         <p>Curently not interested in any event</p>
