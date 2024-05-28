@@ -3,7 +3,9 @@
 {% block content %}
     {% if messages %}
         {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                <div class="alert alert-warning" role="alert">
+                    {{ message }}
+                  </div>
         {% endfor %}
     {% endif %}
     <h1>{{ item.name }}</h1>
@@ -27,6 +29,9 @@
                         {{ i.user }}
                         <hr>
                         {{ i.text }}
+                        <br>
+                        {{ i.commentData }}
+                        <br><br>
                     </div>
                 {% endfor %}
             {% else %}

@@ -10,13 +10,14 @@ def register(response):
         form = RegisterForm(response.POST)
         if form.is_valid():
             form.save()
+            email = response.POST.get("email")
+            subject = "Welcome!"
+            message = f"Thanks for registering"
+            email_from = settings.EMAIL_HOST_USER
+            recipent_list = [email,]
+            print(email)
+            send_mail(subject, message, email_from, recipent_list)
             return redirect("/login")
     else:
         form = RegisterForm()
-    email = response.POST.get("email")
-    subject = "Welcome!"
-    message = "Thanks for registering"
-    email_from = settings.EMAIL_HOST_USER
-    recipent_list = [email]
-    send_mail(subject, message, email_from, recipent_list)
     return render(response, "register/register.html", {"form":form})

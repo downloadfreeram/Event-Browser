@@ -47,6 +47,7 @@ class EventComments(models.Model):
         max_length=100,
         )
     eventId = models.IntegerField()
+    commentData = models.DateTimeField(auto_now_add=True)
     text = models.CharField(
         max_length=1000
         )
