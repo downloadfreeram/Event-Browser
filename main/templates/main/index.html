@@ -15,28 +15,49 @@
     {% if events_items.user != user.get_username %}
         Interested? Take part to stay up to date. In order to do it press <form method="post" action="" name="participate">{% csrf_token %}<button name="btnParticipate" type="submit">here</button></form>
     {% endif %}
-    <div class="commentSection">
         <h1>Komentarze</h1>
         <form method="post" action="" name="addComment">
             {% csrf_token %}
-            <textarea name="text"></textarea>
+            <div class="mb-3">
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text"></textarea>
+            </div>
             <button name="btnComment" type="submit">Add</button>
         </form>
         <div class="commentSection">
             {% if comments %}
                 {% for i in comments %}
-                    <div class="commentBlock">
-                        {{ i.user }}
-                        <hr>
-                        {{ i.text }}
-                        <br>
-                        {{ i.commentData }}
-                        <br><br>
-                    </div>
+                <div class="container">
+                    <div class="list-group">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-dark">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">{{ i.user }}</h5>
+                                        <small>{{ i.commentData }}</small>
+                                </div>
+                                    <p class="mb-1">{{ i.text }}</p>
+                                        <small>Created by {{ i.user }}</small>
+                          </li>
+                        </ul>
+                      </div>
+                      <br>
+                </div>
                 {% endfor %}
             {% else %}
                 <p>Curently no comments</p>
             {% endif %}
         </div>
-    </div>
 {% endblock %}
+
+<div class="container">
+    <div class="list-group">
+        <p class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ i.user }}</h5>
+            <small>{{ i.commentData }}</small>
+          </div>
+          <p class="mb-1">{{ i.text }}</p>
+          <small>Created by {{ i.user }}</small>
+          </p>
+      </div>
+      <br>
+</div>

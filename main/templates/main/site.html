@@ -1,10 +1,13 @@
 {% extends 'main/base.html' %}
 {% block title %}Event Organiser{% endblock %}
 {% block content %}
-    <h1>
-        Welcome {{ user.get_username }} 
-    </h1>
-    <p>
-        <button><a href="../create/">Create an event</a></button>
-    </p>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <h2>Welcome {{ user.get_username }}</h2><br>
+            Simple event creator for my University Project, done by using Django framework for Python. <br>
+            Home bar - redirects to the main site <br>
+            List of Events - redirects to the full list of events that are hosted by other logged users<br>
+            My events - redirects to list of events that the user is currently participating and there user can create a new event<br>
+            Signout - signs out the user from website
+        </div>
 {% endblock %}
