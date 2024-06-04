@@ -13,7 +13,9 @@
           <h1 class="display-4 font-weight-normal">{{ item.name }}</h1>
           <p class="lead font-weight-normal">Short info</p>
             {% if events_items.user != user.get_username %}
-                Interested? Take part to stay up to date. In order to do it press here!<form method="post" action="" name="participate">{% csrf_token %}<br><button name="btnParticipate" type="submit" class="btn btn-outline-secondary">Participate</button></form>
+                Interested? Take part to stay up to date. In order to do it press here!<form method="post" action="" name="participate">
+                {% csrf_token %}
+                <br><button name="btnParticipate" type="submit" class="btn btn-outline-secondary">Participate</button></form>
             {% endif %}
         </div>
         <div class="product-device box-shadow d-none d-md-block"></div>
@@ -23,30 +25,32 @@
         <div class="my-3 py-3">
           <h2 class="display-5">Description</h2>
         </div>
-        <div class="bg-light box-shadow mx-auto text-dark" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+        <div class="bg-light box-shadow mx-auto text-dark" style="width: 80%; min-height:300px; border-radius: 21px 21px 0 0;">
             <br>
             <p class="lead">{{ item.description|safe }}</p>
         </div>
       </div>
-      <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+      <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
         <div class="my-3 p-3">
           <h2 class="display-5">Information about the event</h2>
           <p class="lead"></p>
         </div>
-        <div class="bg-dark box-shadow mx-auto text-white" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+        <div class="bg-light box-shadow mx-auto text-dark" style="width: 80%; min-height: 300px; border-radius: 21px 21px 0 0;">
             <br>
             <p class="lead">Takes place in: {{ item.country }}, {{ item.city }}</p>
             <p class="lead">When will the event take place: {{ item.date }}</p>
         </div>
       </div>
-        <h1>Komentarze</h1>
+      <br>
+        <h1>Comment Section</h1>
+        <br>
         <form method="post" action="" name="addComment">
             {% csrf_token %}
-            <div class="mb-3">
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text"></textarea>
-            </div>
-            <button name="btnComment" type="submit" class="btn btn-outline-secondary">Add an comment</button> 
-        </form>
+                <div class="input-group">
+                   <textarea class="form-control" id="textAreaExample5" rows="3" name="text"></textarea>
+                </div> <br>
+                <button name="btnComment" type="submit" class="btn btn-outline-secondary">Add an comment</button> 
+            </form>
         <br>
         <div class="commentSection">
             {% if comments %}
