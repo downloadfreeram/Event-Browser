@@ -116,7 +116,7 @@ def index(response,id):
         #get an id of user's event to use it as a website
         item = Events.objects.get(id=id) 
         usr = response.user.username
-        comments = EventComments.objects.filter(eventId = id)
+        comments = EventComments.objects.filter(eventId = id).order_by('commentData')
         #check which POST has been clicked
         if response.method == "POST" and "btnParticipate" in response.POST:
             #using Q objects for queries, check if the user is curently participating in the event, if yes then show the alert message
