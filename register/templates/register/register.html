@@ -3,9 +3,14 @@
 {% block title %}Create an account {% endblock %}
 {% block header %}{% endblock %}
 {% block content %}
-    <form method="POST">
+{% load crispy_forms_tags %}
+    <form method="POST" class="form-signin">
         {% csrf_token %}
-        {{form}}
-        <button type="submit">Register</button>
+        <br>
+        <h1 class="h3 mb-3 font-weight-normal">Please register</h1>
+        <div class="mx-auto" style="width:400px">
+            {{form|crispy}}
+        </div> <br>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
     </form>
 {% endblock %}

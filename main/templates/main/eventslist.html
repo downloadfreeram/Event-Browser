@@ -3,7 +3,7 @@
 {% block content %}
     <h1>List of the events</h1>
     <form method="GET" action="/eventslist/"> {% csrf_token %}
-        <input type="search" name="searchBar" placeholder="Search an event"> <button name="searchBtn" type="submit">Search</button> 
+        <input type="search" name="searchBar" placeholder="Search an event by name"> <button name="searchBtn" type="submit">Search</button> 
     </form>
     <div class="container">
         {% if items %}
@@ -14,7 +14,7 @@
                 <h5 class="mb-1">{{ i.name }}</h5>
                 <small>typ eventu</small>
               </div>
-              <p class="mb-1">krotki opis</p>
+              <p class="mb-1" style="text-align:left">krotki opis</p>
               <small>Created by {{ i.user }}</small>
             </a>
           </div>
