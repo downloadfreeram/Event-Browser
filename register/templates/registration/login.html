@@ -3,10 +3,16 @@
 {% block title %}Login{% endblock %}
 {% block header %}{% endblock %}
 {% block content %} 
-    <form method="POST">
+{% load crispy_forms_tags %}
+    <form method="POST" class="form-signin">
         {% csrf_token %}
-        {{form}}
-        <button type="submit">Login</button>
-        <p>Create a new account if you don't have one! Click <a href="/register">here</a></p>
+        <br>
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <div class="mx-auto" style="width:200px">
+            {{form|crispy}}
+        </div>
+        <br>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <p class="mt-5 mb-3 text-muted">Create a new account if you don't have one! Click <a href="/register">here</a></p>
     </form>
 {% endblock %}
