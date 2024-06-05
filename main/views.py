@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.conf import settings
 from django.core.mail import send_mail
+from django.contrib.auth.models import User
 
 # Create your views here.
 def home(response):
@@ -49,15 +50,22 @@ def create(response):
             if form.is_valid():
                 #process the post data and add it to the db
                 d = form.cleaned_data["name"]
+                sdes = form.cleaned_data["shortDescription"]
                 des = form.cleaned_data["description"]
                 dat = form.cleaned_data["date"]
+                status = form.cleaned_data["status"]
                 cou = form.cleaned_data["country"]
                 city = form.cleaned_data["city"]
+                address = form.cleaned_data["address"]
                 t = Events(name=d,
                            date=dat,
-                           description=des
-                           ,country=cou,
-                           city=city)
+                           shortDescription=sdes,
+                           description=des,
+                           status=status,
+                           country=cou,
+                           city=city,
+                           address=address
+                           )
                 t.save()
                 response.user.event.add(t)
 
@@ -91,6 +99,7 @@ def eventslist(response):
         search = response.GET.get('searchBar')
         if search != '' and search is not None:
             items = items.filter(name__icontains = search)
+
         context = {
             'items':items,
         }
@@ -132,6 +141,16 @@ def index(response,id):
                                             date=item.date,
                                             participation="yes")
                 query.save()
+                #after successful participation send a confirmation email to the user
+                userData = User.objects.get(id=response.user.id)
+                email = userData.email
+                print(email)
+                subject = "Information about event"
+                message = f"Hi! \n You are currently interested in "+item.name+". \n Check the info about event on website!"
+                email_from = settings.EMAIL_HOST_USER
+                recipent_list = [email,]
+                print(email)
+                send_mail(subject, message, email_from, recipent_list)
                 return HttpResponseRedirect("/site/")
         if response.method == "POST" and "btnComment" in response.POST:
             form_text = response.POST.get("text")
@@ -188,6 +207,29 @@ def participate(request,id):
     '''
     if request.user.is_authenticated:
         if request.method == "POST":
-            return render(request,'main/site.html',{})
+            return render(request,'main/mylist.html',{})
     else:
         return HttpResponseRedirect("/info/")
+    
+def undoParticipate(request, id):
+    '''
+    Function that allows user to undo the will to participate in an event
+    '''
+    if request.user.is_authenticated:
+        username = request.user.username
+        EventParticipation.objects.filter(Q(eventId=id)&Q(user = username)).delete()
+        return HttpResponseRedirect("/mylist/")
+    else:
+        return HttpResponseRedirect("/info/")
+    
+def removeComment(request,id):
+    '''
+    Function that allows to remove created comments
+    '''
+    if request.user.is_authenticated:
+        username = request.user.username
+        EventComments.objects.filter(Q(eventId=id)&Q(user = username)).delete()
+        return HttpResponseRedirect("/mylist/")
+    else:
+        return HttpResponseRedirect("/info/")
+

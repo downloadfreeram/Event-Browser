@@ -1,22 +1,32 @@
 {% extends 'main/base.html' %}
 {% block title %}My events{% endblock %}
 {% block content %}
-    <h1>List of events created by {{user.get_username}} </h1>
-    {% if items %}
-        {% for i in items %}
-            <p><a href="/{{ i.id }}">{{ i.name }}</a> <a href="/deleteEvent/{{ i.id }}">Delete an Event</a></p>
-        {% endfor %}
-    {% else %}
-        <p>Curently no created events</p>
-    {% endif %}
-    <br>
-    <button><a href="../create/">Create an event</a></button>
-    <h1>List of events that i'm interested in </h1>
-    {% if events_items %}
-        {% for j in events_items %}
-            <p>{{ j.name }} {{ j.date }}</p>
-        {% endfor %}
-    {% else %}
-        <p>Curently not interested in any event</p>
-    {% endif %}
+<br><br>
+    <div class="container">
+        <div class="row">
+          <div class="col" style="border:2px solid black; margin:5px;">
+            <h1>List of events created by {{user.get_username}} </h1>
+                {% if items %}
+                    {% for i in items %}
+                        <p><a href="/{{ i.id }}">{{ i.name }}</a> <a href="/deleteEvent/{{ i.id }}">Delete an Event</a></p>
+                    {% endfor %}
+                {% else %}
+                    <p>Curently no created events</p>
+                {% endif %}
+                <br>
+                <button class="btn btn-lg btn-primary btn-block"><a href="../create/" style="color:white;">Create an event</a></button>
+                <br><br>
+          </div>
+          <div class="col" style="border:2px solid black; margin:5px;">
+            <h1>List of events that i'm interested in </h1>
+                {% if events_items %}
+                    {% for j in events_items %}
+                        <p>{{ j.name }} {{ j.date }} <a href="/undoParticipate/{{ j.eventId }}">Not interested</a></p>
+                    {% endfor %}
+                {% else %}
+                    <p>Curently not interested in any event</p>
+                {% endif %}
+          </div>
+        </div>
+      </div>
 {% endblock %}

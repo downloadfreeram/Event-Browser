@@ -1,9 +1,12 @@
 {% extends 'main/base.html' %}
 {% block title %}Create an Event {% endblock %}
 {% block content %}
-    <form method="post" action="/create/">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button name="save" type="submit">Create</button>
-    </form>
+{% load crispy_forms_tags %}
+<br><h1>Event Creator</h1><br>
+<form method="post" action="/create/">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name="save" type="submit">Create</button>
+</form>
+<br><br>
 {% endblock %}

@@ -2,8 +2,11 @@
 {% block title %}List of Events {% endblock %}
 {% block content %}
     <h1>List of the events</h1>
-    <form method="GET" action="/eventslist/"> {% csrf_token %}
-        <input type="search" name="searchBar" placeholder="Search an event by name"> <button name="searchBtn" type="submit">Search</button> 
+    <form method="GET" action="/eventslist/"> {% csrf_token %} 
+        <div class="row d-flex justify-content-center">
+          <input type="search" name="searchBar" placeholder="Search an event by name" style="width:60%;">
+        </div><br>
+        <button name="searchBtn" type="submit" class="btn btn-lg btn-primary btn-block">Search</button> <br><br>
     </form>
     <div class="container">
         {% if items %}
@@ -12,9 +15,9 @@
             <a href="/{{ i.id }}" class="list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">{{ i.name }}</h5>
-                <small>typ eventu</small>
+                <small>Type: {{ i.status }}</small>
               </div>
-              <p class="mb-1" style="text-align:left">krotki opis</p>
+              <p class="mb-1" style="text-align:left">{{ i.shortDescription }}</p>
               <small>Created by {{ i.user }}</small>
             </a>
           </div>

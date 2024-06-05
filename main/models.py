@@ -4,6 +4,18 @@ from django.contrib.auth.models import User
 # Create your models here.
 #main database
 class Events(models.Model):
+    social = "SOCIAL"
+    webinary = "WEBINARY"
+    meeting = "MEETING"
+    onlineMeeting = "ONLINE MEETING"
+    other = "OTHER"
+    choice = (
+        (social,social),
+        (webinary,webinary),
+        (meeting,meeting),
+        (onlineMeeting,onlineMeeting),
+        (other,other)
+    )
     user = models.ForeignKey(
         User, 
         on_delete=models.CASCADE,
@@ -13,14 +25,21 @@ class Events(models.Model):
         max_length=200
         ) 
     date = models.DateField()
+    shortDescription = models.CharField(
+        max_length=500
+    )
     description = models.CharField(
         max_length = 2000)
+    status = models.CharField(max_length=30,choices=choice,default=other)
     country = models.CharField(
         max_length = 25
         )
     city = models.CharField(
         max_length = 75
         )
+    address = models.CharField(
+        max_length=200
+    )
 
     def __str__(self):
         return self.name
