@@ -6,7 +6,8 @@ This is a project for the university, it is a simple event creator, in which use
 - The virtual environment can be activated by ```Scripts/activate.bat``` command typed in the terminal, which activates our virtual environment.
 - Now enter the ```pip install -r requirements.txt``` command to download every needed dependancies to be able to use the aplication.
 # How to open locally
-- After turning on the virtual environment, navigate to the Event-Browser folder and turn it on with ```python manage.py runserver``` command.
+- Before using the app for the first time, while having the virtual environment active, navigate to the Event-Browser folder and you need to type the ```python manage.py makemigrations``` to create every database that the app is working on, and after that type the ``` python manage.py migrate``` command
+- While being in the Event-Browser folder turn on the server with ```python manage.py runserver``` command.
 - Lastly open the internet browser and type in search bar ```127.0.0.1:8000```
 - Now you can use the app
 # Admin panel
